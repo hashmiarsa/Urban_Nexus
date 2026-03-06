@@ -280,6 +280,11 @@ Every single API response must follow this format. No exceptions.
 - Engines are pure functions. No DB access inside engines.
 - Models are the only place that touches MongoDB.
 
+**Config Rule:**
+- NEVER use process.env.ANYTHING directly in any file
+- ALWAYS import from src/config/index.js
+- Frontend: ALWAYS import from src/config/index.js using import.meta.env
+
 **Error Handling:**
 ```javascript
 // Every controller follows this pattern
@@ -372,6 +377,68 @@ urban-nexus/
 ```
 
 ---
+
+---
+
+## 16. Assets
+
+### 16.1 Illustrations
+> Source: [undraw.co](https://undraw.co) — set accent color to `#0E9F6E` before downloading
+
+Location: `frontend/src/assets/illustrations/`
+
+| File Name | Where It Is Used |
+|---|---|
+| `empty-projects.svg` | Projects list — no data state |
+| `no-conflicts.svg` | Conflicts page — no active conflicts |
+| `hero-city.svg` | Landing page — hero section right side |
+| `not-found.svg` | 404 error page |
+
+---
+
+### 16.2 Icons
+> Source: [Lucide React](https://lucide.dev) — npm package, no files to download
+```bash
+npm install lucide-react
+```
+```javascript
+// Usage
+import { MapPin, AlertTriangle, Building2, Bell } from 'lucide-react'
+```
+
+No icon files live in this repo. Every icon comes from this package only.
+
+---
+
+### 16.3 Logo
+> Defined in: `UI_GUIDE.md → Section 5`
+
+- Built as a pure SVG React component
+- Location: `src/components/common/Logo.jsx`
+- Never use an image file for the logo
+- Works in both light and dark mode automatically
+
+---
+
+### 16.4 User Avatars
+> No image uploads for user profiles in MVP
+
+- Built as an initials-based React component
+- Location: `src/components/common/Avatar.jsx`
+- Generates a colored circle with user initials
+- Example: `"Rahul Sharma"` → circle showing `RS`
+
+---
+
+### 16.5 Map Tiles
+> CDN reference only — no downloads required
+
+| Mode | Tile Provider |
+|---|---|
+| Light mode | CartoDB Positron |
+| Dark mode | CartoDB DarkMatter |
+
+Full URLs defined in `UI_GUIDE.md → Section 8`
 
 *This file is the single source of truth for all developers on this project.*
 *Do not deviate from the folder structure, naming conventions, or response format defined here.*
