@@ -141,7 +141,7 @@ backend/
 frontend/
 ├── src/
 │   ├── config/
-│   │   └── index.js               # Central config — reads import.meta.env
+│   │   └── index.js
 │   ├── api/
 │   │   ├── axios.config.js
 │   │   ├── auth.api.js
@@ -157,7 +157,11 @@ frontend/
 │   │   │   ├── Badge.jsx
 │   │   │   ├── Table.jsx
 │   │   │   ├── Spinner.jsx
-│   │   │   └── Toast.jsx
+│   │   │   ├── Skeleton.jsx        ← added
+│   │   │   ├── Toast.jsx
+│   │   │   ├── Navbar.jsx          ← added
+│   │   │   ├── Sidebar.jsx         ← added
+│   │   │   └── Layout.jsx          ← added
 │   │   ├── map/
 │   │   │   ├── CityMap.jsx
 │   │   │   ├── ProjectMarker.jsx
@@ -180,6 +184,7 @@ frontend/
 │   │       ├── ReportForm.jsx
 │   │       └── TrackReport.jsx
 │   ├── pages/
+│   │   ├── Landing.jsx             ← added
 │   │   ├── Login.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── DeptDashboard.jsx
@@ -189,9 +194,11 @@ frontend/
 │   │   ├── Conflicts.jsx
 │   │   ├── MyTasks.jsx
 │   │   ├── CitizenReport.jsx
-│   │   └── AuditLog.jsx
+│   │   ├── AuditLog.jsx
+│   │   └── NotFound.jsx            ← added
 │   ├── store/
 │   │   ├── authStore.js
+│   │   ├── themeStore.js           ← added
 │   │   ├── projectStore.js
 │   │   └── notificationStore.js
 │   ├── hooks/
@@ -200,7 +207,8 @@ frontend/
 │   │   └── useSocket.js
 │   ├── utils/
 │   │   ├── roles.js
-│   │   └── formatters.js
+│   │   ├── formatters.js
+│   │   └── animations.js           ← added
 │   ├── router/
 │   │   └── AppRouter.jsx
 │   ├── assets/
@@ -211,7 +219,8 @@ frontend/
 │   │   │   └── not-found.svg
 │   │   └── icons/
 │   ├── App.jsx
-│   └── main.jsx
+│   ├── main.jsx
+│   └── index.css                   ← added
 ├── index.html
 ├── tailwind.config.js
 ├── vite.config.js
