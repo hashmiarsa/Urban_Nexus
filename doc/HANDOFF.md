@@ -141,7 +141,7 @@ backend/
 frontend/
 ├── src/
 │   ├── config/
-│   │   └── index.js
+│   │   └── index.js               # Central config — reads import.meta.env
 │   ├── api/
 │   │   ├── axios.config.js
 │   │   ├── auth.api.js
@@ -157,11 +157,11 @@ frontend/
 │   │   │   ├── Badge.jsx
 │   │   │   ├── Table.jsx
 │   │   │   ├── Spinner.jsx
-│   │   │   ├── Skeleton.jsx        ← added
+│   │   │   ├── Skeleton.jsx        # skeleton loader component
 │   │   │   ├── Toast.jsx
-│   │   │   ├── Navbar.jsx          ← added
-│   │   │   ├── Sidebar.jsx         ← added
-│   │   │   └── Layout.jsx          ← added
+│   │   │   ├── Navbar.jsx          # top navbar component
+│   │   │   ├── Sidebar.jsx         # sidebar nav component
+│   │   │   └── Layout.jsx          # shared page layout wrapper
 │   │   ├── map/
 │   │   │   ├── CityMap.jsx
 │   │   │   ├── ProjectMarker.jsx
@@ -184,7 +184,7 @@ frontend/
 │   │       ├── ReportForm.jsx
 │   │       └── TrackReport.jsx
 │   ├── pages/
-│   │   ├── Landing.jsx             ← added
+│   │   ├── Landing.jsx             # public landing page
 │   │   ├── Login.jsx
 │   │   ├── Dashboard.jsx
 │   │   ├── DeptDashboard.jsx
@@ -195,10 +195,10 @@ frontend/
 │   │   ├── MyTasks.jsx
 │   │   ├── CitizenReport.jsx
 │   │   ├── AuditLog.jsx
-│   │   └── NotFound.jsx            ← added
+│   │   └── NotFound.jsx            # 404 page
 │   ├── store/
 │   │   ├── authStore.js
-│   │   ├── themeStore.js           ← added
+│   │   ├── themeStore.js           # dark/light mode Zustand store
 │   │   ├── projectStore.js
 │   │   └── notificationStore.js
 │   ├── hooks/
@@ -208,7 +208,7 @@ frontend/
 │   ├── utils/
 │   │   ├── roles.js
 │   │   ├── formatters.js
-│   │   └── animations.js           ← added
+│   │   └── animations.js           # Framer Motion constants
 │   ├── router/
 │   │   └── AppRouter.jsx
 │   ├── assets/
@@ -220,7 +220,7 @@ frontend/
 │   │   └── icons/
 │   ├── App.jsx
 │   ├── main.jsx
-│   └── index.css                   ← added
+│   └── index.css                   # global styles, shimmer, scrollbar
 ├── index.html
 ├── tailwind.config.js
 ├── vite.config.js
