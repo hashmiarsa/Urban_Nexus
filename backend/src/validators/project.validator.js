@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 const Joi = require("joi");
 
@@ -68,7 +68,7 @@ const coordinatesSchema = Joi.array()
   });
 
 // ---------------------------------------------------------------------------
-// createProjectSchema — POST /api/v1/projects
+// createProjectSchema â€” POST /api/v1/projects
 // ---------------------------------------------------------------------------
 const createProjectSchema = Joi.object({
   title: Joi.string()
@@ -90,9 +90,7 @@ const createProjectSchema = Joi.object({
       "any.required": "Project type is required",
     }),
 
-  department: objectId.required().messages({
-    "any.required": "Department is required",
-  }),
+  department: objectId.optional().allow(null, ""),
 
   location: Joi.object({
     type: Joi.string()
@@ -166,8 +164,8 @@ const createProjectSchema = Joi.object({
 }).options({ abortEarly: false });
 
 // ---------------------------------------------------------------------------
-// updateProjectSchema — PATCH /api/v1/projects/:id
-// All fields optional — only validate what is sent
+// updateProjectSchema â€” PATCH /api/v1/projects/:id
+// All fields optional â€” only validate what is sent
 // Officers cannot update: department, submittedBy, mcdmScore
 // Those restrictions are enforced in the service layer
 // ---------------------------------------------------------------------------
@@ -196,7 +194,7 @@ const updateProjectSchema = Joi.object({
 }).options({ abortEarly: false });
 
 // ---------------------------------------------------------------------------
-// projectIdSchema — validates :id param on project routes
+// projectIdSchema â€” validates :id param on project routes
 // ---------------------------------------------------------------------------
 const projectIdSchema = Joi.object({
   id: objectId.required().messages({

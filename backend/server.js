@@ -1,26 +1,23 @@
-"use strict";
+﻿"use strict";
 
-const http      = require("http");
-const app       = require("./src/app");
-const connectDB = require("./src/config/db");
-const config    = require("./src/config/index");
-const logger    = require("./src/utils/logger");
+const http          = require("http");
+const app           = require("./src/app");
+const connectDB     = require("./src/config/db");
+const config        = require("./src/config/index");
+const logger        = require("./src/utils/logger");
+const { initSocket } = require("./src/socket/socket.handler");
 
 // ---------------------------------------------------------------------------
 // Create HTTP server from Express app
-// Separating server creation from app.js allows socket.io to attach
-// to the same server instance in Phase 4
+// Socket.io attaches to this server instance, not to the Express app directly
 // ---------------------------------------------------------------------------
 const server = http.createServer(app);
 
 // ---------------------------------------------------------------------------
-// Graceful shutdown handler
-// Closes server and DB connection cleanly on SIGTERM / SIGINT
-// SIGTERM — sent by Docker / process managers on container stop
-// SIGINT  — sent by Ctrl+C in development
+// Graceful shutdown
 // ---------------------------------------------------------------------------
 const shutdown = (signal) => {
-  logger.info(`[Server] ${signal} received — shutting down gracefully`);
+  logger.info(`[Server] ${signal} received â€” shutting down gracefully`);
 
   server.close(async () => {
     logger.info("[Server] HTTP server closed");
@@ -31,7 +28,7 @@ const shutdown = (signal) => {
       logger.info("[DB] MongoDB connection closed");
       process.exit(0);
     } catch (err) {
-      logger.error(`[Server] Error during shutdown — ${err.message}`);
+      logger.error(`[Server] Error during shutdown â€” ${err.message}`);
       process.exit(1);
     }
   });
@@ -40,37 +37,37 @@ const shutdown = (signal) => {
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 process.on("SIGINT",  () => shutdown("SIGINT"));
 
-// ---------------------------------------------------------------------------
-// Unhandled rejection and exception safety nets
-// Logs the error and exits — let Docker / PM2 restart the process
-// ---------------------------------------------------------------------------
 process.on("unhandledRejection", (reason) => {
-  logger.error(`[Server] Unhandled Promise Rejection — ${reason}`);
+  logger.error(`[Server] Unhandled Promise Rejection â€” ${reason}`);
   shutdown("unhandledRejection");
 });
 
 process.on("uncaughtException", (err) => {
-  logger.error(`[Server] Uncaught Exception — ${err.message}`);
+  logger.error(`[Server] Uncaught Exception â€” ${err.message}`);
   shutdown("uncaughtException");
 });
 
 // ---------------------------------------------------------------------------
-// Boot sequence — connect DB first, then start listening
-// Server never starts if DB connection fails
+// Boot sequence
+// 1. Connect MongoDB
+// 2. Start HTTP server
+// 3. Attach Socket.io (must be after server.listen so the port is bound)
 // ---------------------------------------------------------------------------
 const start = async () => {
   try {
-    // 1. Connect to MongoDB
     await connectDB();
 
-    // 2. Start HTTP server
     server.listen(config.PORT, () => {
       logger.info(`[Server] Urban Nexus API running on port ${config.PORT}`);
-      logger.info(`[Server] Environment — ${config.NODE_ENV}`);
-      logger.info(`[Server] Health check — http://localhost:${config.PORT}/health`);
+      logger.info(`[Server] Environment â€” ${config.NODE_ENV}`);
+      logger.info(`[Server] Health check â€” http://localhost:${config.PORT}/health`);
+
+      // Attach Socket.io after server is listening
+      initSocket(server);
+      logger.info(`[Server] Socket.io attached`);
     });
   } catch (err) {
-    logger.error(`[Server] Failed to start — ${err.message}`);
+    logger.error(`[Server] Failed to start â€” ${err.message}`);
     process.exit(1);
   }
 };

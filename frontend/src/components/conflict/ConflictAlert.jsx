@@ -1,4 +1,4 @@
-import { AlertTriangle, ArrowRight } from 'lucide-react'
+﻿import { AlertTriangle, ArrowRight } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { formatDate } from '@/utils/formatters'
 import Button from '@/components/common/Button'
@@ -30,7 +30,7 @@ export default function ConflictAlert({ conflict }) {
 
           {conflict.overlapDates && (
             <p className="text-xs text-red-600 dark:text-red-500 mb-3">
-              Overlap: {formatDate(conflict.overlapDates.start)} →{' '}
+              Overlap: {formatDate(conflict.overlapDates.start)} â†’{' '}
               {formatDate(conflict.overlapDates.end)}
             </p>
           )}
@@ -38,7 +38,7 @@ export default function ConflictAlert({ conflict }) {
           <Button
             size="sm"
             variant="danger"
-            onClick={() => navigate(`/conflicts`)}
+            onClick={() => navigate(`/conflicts/${conflict._id}`)}
           >
             View Details
           </Button>

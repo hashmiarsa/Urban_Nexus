@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 const express = require("express");
 const router  = express.Router();
@@ -47,14 +47,14 @@ const resourceIdSchema = Joi.object({
 });
 
 // ---------------------------------------------------------------------------
-// Admin Routes — mounted at /api/v1/admin in app.js
-// ALL routes are admin only — permit("admin") on every route
-// Full implementation in Phase 2/5 — currently all return 200 "Coming soon"
+// Admin Routes â€” mounted at /api/v1/admin in app.js
+// ALL routes are admin only â€” permit("admin") on every route
+// Full implementation in Phase 2/5 â€” currently all return 200 "Coming soon"
 // ---------------------------------------------------------------------------
 
 /**
  * GET /api/v1/admin/stats
- * Admin dashboard — total projects, conflicts, reports, dept performance
+ * Admin dashboard â€” total projects, conflicts, reports, dept performance
  */
 router.get(
   "/stats",
@@ -100,7 +100,7 @@ router.patch(
 
 /**
  * PATCH /api/v1/admin/users/:id/deactivate
- * Deactivate a user account — sets isActive: false
+ * Deactivate a user account â€” sets isActive: false
  * Separate from update to make the action explicit and auditable
  */
 router.patch(
@@ -113,7 +113,7 @@ router.patch(
 
 /**
  * GET /api/v1/admin/audit-log
- * Full audit log — all actions across all resources, paginated
+ * Full audit log â€” all actions across all resources, paginated
  */
 router.get(
   "/audit-log",
@@ -133,5 +133,9 @@ router.get(
   validateParams(resourceIdSchema),
   getAuditLogByResource
 );
+
+// Aliases for frontend compatibility
+router.get("/dashboard", auth, permit("admin"), getDashboardStats);
+router.get("/audit", auth, permit("admin"), getAuditLog);
 
 module.exports = router;

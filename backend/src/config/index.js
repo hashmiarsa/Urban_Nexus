@@ -1,10 +1,10 @@
-"use strict";
+﻿"use strict";
 
 const dotenv = require("dotenv");
 dotenv.config();
 
 // ---------------------------------------------------------------------------
-// Required variables — server crashes on startup if any of these are missing
+// Required variables â€” server crashes on startup if any of these are missing
 // ---------------------------------------------------------------------------
 const REQUIRED_VARS = [
   "MONGO_URI",
@@ -18,13 +18,13 @@ const missing = REQUIRED_VARS.filter((key) => !process.env[key]);
 
 if (missing.length > 0) {
   console.error(
-    `[Config] FATAL — Missing required environment variables: ${missing.join(", ")}`
+    `[Config] FATAL â€” Missing required environment variables: ${missing.join(", ")}`
   );
   process.exit(1);
 }
 
 // ---------------------------------------------------------------------------
-// Exported constants — every file in the codebase imports from here
+// Exported constants â€” every file in the codebase imports from here
 // Never use process.env directly anywhere else
 // ---------------------------------------------------------------------------
 const config = {
@@ -51,6 +51,16 @@ const config = {
   IS_PRODUCTION:  process.env.NODE_ENV === "production",
   IS_DEVELOPMENT: process.env.NODE_ENV === "development",
   IS_TEST:        process.env.NODE_ENV === "test",
+  // Conflict detection
+  CONFLICT_CHECK_STATUSES: ["pending", "approved", "ongoing"],
+  TOPSIS_WEIGHTS: {
+    urgency:           0.30,
+    socialImpact:      0.25,
+    estimatedCost:     0.20,
+    feasibility:       0.15,
+    environmentImpact: 0.10,
+  },
 };
 
 module.exports = config;
+

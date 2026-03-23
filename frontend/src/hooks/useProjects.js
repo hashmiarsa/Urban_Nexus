@@ -55,3 +55,9 @@ export function useUpdateProjectStatus() {
     },
   })
 }
+export function useMyTasks() {
+  return useQuery({
+    queryKey: ['mytasks'],
+    queryFn: () => projectApi.getAll({ assignedToMe: true }).then((r) => r.data),
+  })
+}

@@ -1,18 +1,21 @@
-"use strict";
+﻿"use strict";
 
-const { success } = require("../utils/response");
+const ReportService = require("../services/report.service");
+const { success }   = require("../utils/response");
 
 // ---------------------------------------------------------------------------
-// Report Controller — STUBBED
-// Full implementation in Phase 5
-// All handlers return 200 "Coming soon — Phase 2"
+// report.controller.js â€” full implementation replacing Phase 1 stub
+// Controllers only handle req/res â€” zero business logic here
 // ---------------------------------------------------------------------------
-
-const STUB_MESSAGE = "Coming soon — Phase 2";
 
 const createReport = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    // Photo URL is set by multer-storage-cloudinary middleware
+    // req.file.path = Cloudinary URL when photo is uploaded
+    // req.file is undefined when no photo is provided
+    const photoUrl = req.file?.path || null;
+    const result   = await ReportService.createReport(req.body, photoUrl);
+    return res.status(201).json(success("Report submitted successfully", result));
   } catch (err) {
     next(err);
   }
@@ -20,7 +23,8 @@ const createReport = async (req, res, next) => {
 
 const trackReport = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const report = await ReportService.trackReport(req.params.trackingId);
+    return res.status(200).json(success("Report found", report));
   } catch (err) {
     next(err);
   }
@@ -28,7 +32,13 @@ const trackReport = async (req, res, next) => {
 
 const getAllReports = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const { reports, pagination } = await ReportService.getAllReports(req.query);
+    return res.status(200).json({
+      success: true,
+      message: "Reports fetched",
+      data:    reports,
+      pagination,
+    });
   } catch (err) {
     next(err);
   }
@@ -36,7 +46,8 @@ const getAllReports = async (req, res, next) => {
 
 const getReportById = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const report = await ReportService.getReportById(req.params.id);
+    return res.status(200).json(success("Report fetched", report));
   } catch (err) {
     next(err);
   }
@@ -44,7 +55,15 @@ const getReportById = async (req, res, next) => {
 
 const updateReportStatus = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const { status, assignedTo } = req.body;
+    const report = await ReportService.updateReportStatus(
+      req.params.id,
+      status,
+      assignedTo,
+      req.user,
+      req.ip
+    );
+    return res.status(200).json(success("Report status updated", report));
   } catch (err) {
     next(err);
   }
@@ -52,7 +71,9 @@ const updateReportStatus = async (req, res, next) => {
 
 const assignReport = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const { departmentId } = req.body;
+    const report = await ReportService.assignReport(req.params.id, departmentId);
+    return res.status(200).json(success("Report assigned to department", report));
   } catch (err) {
     next(err);
   }
@@ -60,7 +81,9 @@ const assignReport = async (req, res, next) => {
 
 const linkReportToProject = async (req, res, next) => {
   try {
-    return res.status(200).json(success(STUB_MESSAGE, null));
+    const { projectId } = req.body;
+    const report = await ReportService.linkReportToProject(req.params.id, projectId);
+    return res.status(200).json(success("Report linked to project", report));
   } catch (err) {
     next(err);
   }

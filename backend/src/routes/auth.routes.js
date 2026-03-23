@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 
 const express  = require("express");
 const router   = express.Router();
@@ -10,13 +10,13 @@ const { registerSchema,
         loginSchema }         = require("../validators/auth.validator");
 
 // ---------------------------------------------------------------------------
-// Auth Routes — mounted at /api/v1/auth in app.js
+// Auth Routes â€” mounted at /api/v1/auth in app.js
 // ---------------------------------------------------------------------------
 
 /**
  * POST /api/v1/auth/register
  * Public
- * Validates body → creates user → returns token
+ * Validates body â†’ creates user â†’ returns token
  */
 router.post(
   "/register",
@@ -27,7 +27,7 @@ router.post(
 /**
  * POST /api/v1/auth/login
  * Public
- * Validates body → verifies credentials → returns token
+ * Validates body â†’ verifies credentials â†’ returns token
  */
 router.post(
   "/login",
@@ -37,7 +37,7 @@ router.post(
 
 /**
  * GET /api/v1/auth/me
- * Protected — requires valid JWT
+ * Protected â€” requires valid JWT
  * Returns currently authenticated user's profile
  */
 router.get(
@@ -45,5 +45,13 @@ router.get(
   auth,
   me
 );
+
+router.get("/users", auth, async (req, res, next) => {
+  try {
+    const User = require("../models/User");
+    const users = await User.find({ isActive: true }).select("-password").lean();
+    return res.json({ success: true, message: "Users fetched", data: users });
+  } catch (err) { next(err); }
+});
 
 module.exports = router;
