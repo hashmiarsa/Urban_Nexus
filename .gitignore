@@ -1,5 +1,0 @@
-# Environment files - never commit these
-backend/.env
-frontend/.env
-node_modules/
-*.log
