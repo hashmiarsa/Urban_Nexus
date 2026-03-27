@@ -1,0 +1,12 @@
+const router = require("express").Router()
+const c = require("../controllers/projectsController")
+const { protect, authorize } = require("../middleware/auth")
+router.use(protect)
+router.get("/",           c.getProjects)
+router.get("/:id",        c.getProject)
+router.post("/",          authorize("officer"), c.createProject)
+router.put("/:id",        c.updateProject)
+router.put("/:id/approve",authorize("admin"),   c.approveProject)
+router.put("/:id/reject", authorize("admin"),   c.rejectProject)
+router.put("/:id/progress",authorize("supervisor"), c.updateProgress)
+module.exports = router
